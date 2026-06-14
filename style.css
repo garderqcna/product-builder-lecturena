@@ -22,8 +22,9 @@ body {
     font-family: 'Montserrat', sans-serif;
     display: flex;
     justify-content: center;
-    align-items: center;
-    height: 100vh;
+    align-items: flex-start; /* 상단부터 정렬 */
+    min-height: 100vh;
+    padding: 40px 20px;
     margin: 0;
     transition: background-color 0.3s ease, color 0.3s ease;
 }
@@ -35,6 +36,23 @@ body {
     border-radius: 20px;
     box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
     transition: background-color 0.3s ease;
+    max-width: 600px;
+    width: 100%;
+}
+
+/* 댓글 섹션 스타일 */
+.comments-section {
+    margin-top: 40px;
+}
+
+.comments-section hr {
+    border: 0;
+    border-top: 1px solid #eee;
+    margin-bottom: 30px;
+}
+
+[data-theme="dark"] .comments-section hr {
+    border-top: 1px solid #444;
 }
 
 h1 {
