@@ -1,6 +1,34 @@
 document.addEventListener('DOMContentLoaded', () => {
     const generatorBtn = document.getElementById('generator-btn');
     const lottoBalls = document.querySelectorAll('.ball');
+    const toggleSwitch = document.querySelector('.theme-switch input[type="checkbox"]');
+    const themeText = document.getElementById('theme-text');
+
+    // 테마 전환 함수
+    function switchTheme(e) {
+        if (e.target.checked) {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            localStorage.setItem('theme', 'dark');
+            themeText.textContent = '다크 모드';
+        } else {
+            document.documentElement.setAttribute('data-theme', 'light');
+            localStorage.setItem('theme', 'light');
+            themeText.textContent = '화이트 모드';
+        }
+    }
+
+    // 이벤트 리스너 추가
+    toggleSwitch.addEventListener('change', switchTheme, false);
+
+    // 초기 테마 로드
+    const currentTheme = localStorage.getItem('theme') ? localStorage.getItem('theme') : null;
+    if (currentTheme) {
+        document.documentElement.setAttribute('data-theme', currentTheme);
+        if (currentTheme === 'dark') {
+            toggleSwitch.checked = true;
+            themeText.textContent = '다크 모드';
+        }
+    }
 
     function getColor(number) {
         if (number <= 10) {
