@@ -44,11 +44,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function generateNumbers() {
         const numbers = new Set();
-        while(numbers.size < 6) {
+        while(numbers.size < 7) { // 6개 + 보너스 1개 총 7개 생성
             const randomNum = Math.floor(Math.random() * 45) + 1;
             numbers.add(randomNum);
         }
-        return Array.from(numbers).sort((a, b) => a - b);
+        
+        const allNums = Array.from(numbers);
+        const bonusNum = allNums.pop(); // 마지막 번호를 보너스 번호로 사용
+        const mainNums = allNums.sort((a, b) => a - b);
+        
+        return { mainNums, bonusNum };
     }
 
     function createLottoRow(rowIndex) {
@@ -60,9 +65,10 @@ document.addEventListener('DOMContentLoaded', () => {
         label.textContent = String.fromCharCode(65 + rowIndex); // A, B, C, D, E
         row.appendChild(label);
 
-        const sortedNumbers = generateNumbers();
+        const { mainNums, bonusNum } = generateNumbers();
         
-        sortedNumbers.forEach((number, colIndex) => {
+        // 메인 번호 6개 생성
+        mainNums.forEach((number, colIndex) => {
             const ball = document.createElement('div');
             ball.className = 'ball';
             ball.style.transform = 'scale(0)';
@@ -73,10 +79,31 @@ document.addEventListener('DOMContentLoaded', () => {
                 ball.style.backgroundColor = colors.bg;
                 ball.style.color = colors.text;
                 ball.style.transform = 'scale(1)';
-            }, (rowIndex * 150) + (colIndex * 50)); // 행과 열에 따른 순차적 애니메이션
+            }, (rowIndex * 150) + (colIndex * 50));
 
             row.appendChild(ball);
         });
+
+        // + 기호 추가
+        const plusSign = document.createElement('span');
+        plusSign.className = 'bonus-plus';
+        plusSign.textContent = '+';
+        row.appendChild(plusSign);
+
+        // 보너스 번호 생성
+        const bonusBall = document.createElement('div');
+        bonusBall.className = 'ball bonus';
+        bonusBall.style.transform = 'scale(0)';
+        
+        setTimeout(() => {
+            const colors = getColor(bonusNum);
+            bonusBall.textContent = bonusNum;
+            bonusBall.style.backgroundColor = colors.bg;
+            bonusBall.style.color = colors.text;
+            bonusBall.style.transform = 'scale(1)';
+        }, (rowIndex * 150) + (6 * 50) + 100);
+
+        row.appendChild(bonusBall);
 
         return row;
     }

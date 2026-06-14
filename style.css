@@ -36,7 +36,7 @@ body {
     border-radius: 20px;
     box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
     transition: background-color 0.3s ease;
-    max-width: 600px;
+    max-width: 650px;
     width: 100%;
 }
 
@@ -135,7 +135,20 @@ input:checked + .slider:before {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
+}
+
+.bonus-plus {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--text-color);
+    margin: 0 2px;
+    opacity: 0.5;
+}
+
+.ball.bonus {
+    border: 2px solid var(--button-bg);
+    box-sizing: border-box;
 }
 
 .row-label {
