@@ -42,7 +42,8 @@ h1 {
     font-size: 1.5rem;
     font-weight: bold;
     color: #333;
-    box-shadow: 0 5px 10px rgba(0,0,0,0.1), 0 3px 3px rgba(0,0,0,0.1);
+    box-shadow: inset -5px -5px 10px rgba(0,0,0,0.1), 3px 3px 10px rgba(0,0,0,0.2);
+    transition: transform 0.3s ease, background-color 0.3s ease;
 }
 
 #generator-btn {
