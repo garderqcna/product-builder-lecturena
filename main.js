@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     const generatorBtn = document.getElementById('generator-btn');
-    const lottoBalls = document.querySelectorAll('.ball');
+    const lottoContainer = document.getElementById('lotto-container');
     const toggleSwitch = document.querySelector('.theme-switch input[type="checkbox"]');
     const themeText = document.getElementById('theme-text');
 
@@ -17,11 +17,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // 이벤트 리스너 추가
     toggleSwitch.addEventListener('change', switchTheme, false);
 
-    // 초기 테마 로드
-    const currentTheme = localStorage.getItem('theme') ? localStorage.getItem('theme') : null;
+    const currentTheme = localStorage.getItem('theme');
     if (currentTheme) {
         document.documentElement.setAttribute('data-theme', currentTheme);
         if (currentTheme === 'dark') {
@@ -32,15 +30,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function getColor(number) {
         if (number <= 10) {
-            return { bg: '#fbc400', text: 'black' }; // 노랑
+            return { bg: '#fbc400', text: 'black' };
         } else if (number <= 20) {
-            return { bg: '#69c8f2', text: 'white' }; // 파랑
+            return { bg: '#69c8f2', text: 'white' };
         } else if (number <= 30) {
-            return { bg: '#ff7272', text: 'white' }; // 빨강
+            return { bg: '#ff7272', text: 'white' };
         } else if (number <= 40) {
-            return { bg: '#aaa', text: 'white' };    // 회색
+            return { bg: '#aaa', text: 'white' };
         } else {
-            return { bg: '#b0d840', text: 'black' }; // 연두
+            return { bg: '#b0d840', text: 'black' };
         }
     }
 
@@ -53,28 +51,43 @@ document.addEventListener('DOMContentLoaded', () => {
         return Array.from(numbers).sort((a, b) => a - b);
     }
 
-    function updateDisplay() {
+    function createLottoRow(rowIndex) {
+        const row = document.createElement('div');
+        row.className = 'lotto-row';
+        
+        const label = document.createElement('span');
+        label.className = 'row-label';
+        label.textContent = String.fromCharCode(65 + rowIndex); // A, B, C, D, E
+        row.appendChild(label);
+
         const sortedNumbers = generateNumbers();
         
-        lottoBalls.forEach((ball, index) => {
-            // 애니메이션 효과를 위해 클래스 잠시 제거 후 추가
+        sortedNumbers.forEach((number, colIndex) => {
+            const ball = document.createElement('div');
+            ball.className = 'ball';
             ball.style.transform = 'scale(0)';
-            ball.style.transition = 'transform 0.3s ease';
             
             setTimeout(() => {
-                const number = sortedNumbers[index];
                 const colors = getColor(number);
-                
                 ball.textContent = number;
                 ball.style.backgroundColor = colors.bg;
                 ball.style.color = colors.text;
                 ball.style.transform = 'scale(1)';
-            }, index * 100); // 순차적으로 나타나는 효과
+            }, (rowIndex * 150) + (colIndex * 50)); // 행과 열에 따른 순차적 애니메이션
+
+            row.appendChild(ball);
         });
+
+        return row;
+    }
+
+    function updateDisplay() {
+        lottoContainer.innerHTML = ''; // 기존 번호 삭제
+        for(let i = 0; i < 5; i++) {
+            lottoContainer.appendChild(createLottoRow(i));
+        }
     }
 
     generatorBtn.addEventListener('click', updateDisplay);
-
-    // 초기 실행 시에도 번호 생성
     updateDisplay();
 });
